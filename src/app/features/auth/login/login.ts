@@ -25,7 +25,7 @@ export class Login {
   readonly LogIn = LogIn;
 
   loginForm: FormGroup;
-  loading = false;
+  loading = false;//true;
   error = '';
 
   constructor() {

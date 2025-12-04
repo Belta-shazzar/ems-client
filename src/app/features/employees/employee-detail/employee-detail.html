@@ -1,1 +1,256 @@
-<p>employee-detail works!</p>
+<div class="p-6">
+  <div class="max-w-4xl mx-auto">
+    <!-- Back Button -->
+    <div class="mb-6">
+      <a
+        routerLink="/employees"
+        class="inline-flex items-center text-blue-600 hover:text-blue-800"
+      >
+        <lucide-icon [img]="ArrowLeft" [size]="20" class="mr-2"></lucide-icon>
+        Back to Employees
+      </a>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex items-center justify-center py-12">
+      <div
+        class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+      ></div>
+    </div>
+
+    <!-- Error Message -->
+    <div
+      *ngIf="error && !loading"
+      class="mb-6 p-4 bg-red-50 border-l-4 border-red-500"
+    >
+      <div class="flex">
+        <div class="shrink-0">
+          <svg
+            class="h-5 w-5 text-red-500"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-red-700">{{ error }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Employee Details -->
+    <div *ngIf="employee && !loading" class="space-y-6">
+      <!-- Header -->
+      <div
+        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+      >
+        <div class="flex items-center gap-4">
+          <div
+            class="h-16 w-16 bg-blue-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-blue-700 font-bold text-2xl">
+              {{ employee.firstName.charAt(0)
+              }}{{ employee.lastName.charAt(0) }}
+            </span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900">
+              {{ employee.firstName }} {{ employee.lastName }}
+            </h1>
+            <div class="flex items-center gap-2 mt-1">
+              <span
+                class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [ngClass]="getStatusBadgeClass(employee.status)"
+              >
+                {{ employee.status }}
+              </span>
+              <span
+                class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [ngClass]="getRoleBadgeClass(employee.role)"
+              >
+                {{ employee.role }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <a
+            [routerLink]="['/employees', employee.id, 'edit']"
+            class="btn btn-secondary flex items-center gap-2"
+          >
+            <lucide-icon [img]="Edit" [size]="16"></lucide-icon>
+            <span>Edit</span>
+          </a>
+          <button
+            (click)="deleteEmployee()"
+            class="btn btn-danger flex items-center gap-2"
+          >
+            <lucide-icon [img]="Trash2" [size]="16"></lucide-icon>
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Personal Information -->
+          <div class="card">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">
+              Personal Information
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">First Name</h3>
+                <p class="mt-1 text-sm text-gray-900">
+                  {{ employee.firstName }}
+                </p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Last Name</h3>
+                <p class="mt-1 text-sm text-gray-900">
+                  {{ employee.lastName }}
+                </p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Email</h3>
+                <div class="mt-1 flex items-center gap-2">
+                  <lucide-icon
+                    [img]="Mail"
+                    class="text-gray-400"
+                    [size]="16"
+                  ></lucide-icon>
+                  <a
+                    [href]="'mailto:' + employee.email"
+                    class="text-sm text-blue-600 hover:underline"
+                  >
+                    {{ employee.email }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Employment Details -->
+          <div class="card">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">
+              Employment Details
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Employee ID</h3>
+                <p class="mt-1 text-sm text-gray-900">{{ employee.id }}</p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Department</h3>
+                <div class="mt-1 flex items-center gap-2">
+                  <lucide-icon
+                    [img]="Building2"
+                    class="text-gray-400"
+                    [size]="16"
+                  ></lucide-icon>
+                  <span class="text-sm text-gray-900">{{
+                    employee.departmentName || "N/A"
+                  }}</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Role</h3>
+                <div class="mt-1 flex items-center gap-2">
+                  <lucide-icon
+                    [img]="UserCog"
+                    class="text-gray-400"
+                    [size]="16"
+                  ></lucide-icon>
+                  <span class="text-sm text-gray-900">{{ employee.role }}</span>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Status</h3>
+                <div class="mt-1">
+                  <span
+                    class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                    [ngClass]="getStatusBadgeClass(employee.status)"
+                  >
+                    {{ employee.status }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6">
+          <!-- Quick Actions -->
+          <div class="card">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">
+              Quick Actions
+            </h2>
+            <div class="space-y-3">
+              <a
+                [href]="'mailto:' + employee.email"
+                class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <lucide-icon
+                  [img]="Mail"
+                  class="text-blue-600"
+                  [size]="20"
+                ></lucide-icon>
+                <div>
+                  <p class="font-medium text-gray-900">Send Email</p>
+                  <p class="text-sm text-gray-600">
+                    Contact {{ employee.firstName }}
+                  </p>
+                </div>
+              </a>
+              <a
+                [routerLink]="['/employees', employee.id, 'edit']"
+                class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+              >
+                <lucide-icon
+                  [img]="Edit"
+                  class="text-blue-600"
+                  [size]="20"
+                ></lucide-icon>
+                <div>
+                  <p class="font-medium text-gray-900">Edit Profile</p>
+                  <p class="text-sm text-gray-600">Update employee details</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- System Information -->
+          <div class="card">
+            <h2 class="text-lg font-medium text-gray-900 mb-4">
+              System Information
+            </h2>
+            <div class="space-y-4">
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">
+                  Account Created
+                </h3>
+                <p class="mt-1 text-sm text-gray-900">
+                  {{ employee.createdAt | date : "medium" }}
+                </p>
+              </div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500">Last Updated</h3>
+                <p class="mt-1 text-sm text-gray-900">
+                  {{ employee.updatedAt | date : "medium" }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

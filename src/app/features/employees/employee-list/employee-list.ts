@@ -40,7 +40,7 @@ export class EmployeeList implements OnInit {
 
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
-  loading = false;
+  loading = false;//true;
   searchTerm = '';
   viewMode: 'grid' | 'list' = 'grid';
 

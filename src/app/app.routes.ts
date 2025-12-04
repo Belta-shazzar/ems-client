@@ -40,21 +40,21 @@ export const routes: Routes = [
           ),
         data: { roles: [EmployeeRole.ADMIN, EmployeeRole.MANAGER] },
       },
-      // {
-      // path: 'employees/new',
-      // loadComponent: () =>
-      //   import(
-      //     './features/employees/employee-form/employee-form.component'
-      //   ).then((m) => m.EmployeeFormComponent),
-      // data: { roles: [EmployeeRole.ADMIN] },
-      // },
-      // {
-      // path: 'employees/:id',
-      // loadComponent: () =>
-      //   import(
-      //     './features/employees/employee-detail/employee-detail.component'
-      //   ).then((m) => m.EmployeeDetailComponent),
-      // },
+      {
+        path: 'employees/new',
+        loadComponent: () =>
+          import('./features/employees/employee-form/employee-form').then(
+            (m) => m.EmployeeForm
+          ),
+        data: { roles: [EmployeeRole.ADMIN] },
+      },
+      {
+      path: 'employees/:id',
+      loadComponent: () =>
+        import(
+          './features/employees/employee-detail/employee-detail'
+        ).then((m) => m.EmployeeDetail),
+      },
       // {
       // path: 'employees/:id/edit',
       // loadComponent: () =>
