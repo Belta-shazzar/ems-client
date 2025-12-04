@@ -1,0 +1,300 @@
+<div class="p-6 space-y-6">
+  <!-- Header -->
+  <div
+    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+  >
+    <div class="flex items-center gap-3">
+      <div class="p-3 bg-blue-100 rounded-lg">
+        <lucide-icon
+          [img]="Users"
+          class="text-blue-600"
+          [size]="28"
+        ></lucide-icon>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Employees</h1>
+        <p class="text-sm text-gray-600">
+          Manage your organization's employees
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <a
+        *ngIf="isAdmin"
+        routerLink="/employees/new"
+        class="btn btn-primary flex items-center gap-2"
+      >
+        <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+        <span>Add Employee</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="bg-white rounded-xl shadow-sm p-4">
+    <div class="flex flex-col sm:flex-row gap-4">
+      <div class="relative flex-1">
+        <div
+          class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+        >
+          <lucide-icon
+            [img]="Search"
+            class="text-gray-400"
+            [size]="20"
+          ></lucide-icon>
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          class="input pl-10"
+          placeholder="Search employees..."
+        />
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          (click)="toggleViewMode()"
+          [class.bg-gray-100]="viewMode === 'grid'"
+          class="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          [title]="
+            viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'
+          "
+        >
+          <lucide-icon
+            [img]="viewMode === 'grid' ? List : Grid"
+            [size]="20"
+          ></lucide-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex items-center justify-center py-12">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+    ></div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!loading && filteredEmployees.length === 0"
+    class="text-center py-12"
+  >
+    <div class="mx-auto h-16 w-16 text-gray-400">
+      <lucide-icon [img]="Users" [size]="64"></lucide-icon>
+    </div>
+    <h3 class="mt-2 text-lg font-medium text-gray-900">No employees found</h3>
+    <p class="mt-1 text-sm text-gray-500">
+      {{
+        searchTerm
+          ? "No employees match your search criteria."
+          : "Get started by adding a new employee."
+      }}
+    </p>
+    <div class="mt-6">
+      <a
+        *ngIf="isAdmin"
+        routerLink="/employees/new"
+        class="btn btn-primary inline-flex items-center gap-2"
+      >
+        <lucide-icon [img]="Plus" [size]="20"></lucide-icon>
+        <span>Add Employee</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Grid View -->
+  <div
+    *ngIf="!loading && filteredEmployees.length > 0 && viewMode === 'grid'"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+  >
+    <div
+      *ngFor="let employee of filteredEmployees"
+      class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+    >
+      <div class="p-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <div
+              class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center"
+            >
+              <span class="text-blue-700 font-semibold text-lg">
+                {{ employee.firstName.charAt(0)
+                }}{{ employee.lastName.charAt(0) }}
+              </span>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-900">
+                {{ employee.firstName }} {{ employee.lastName }}
+              </h3>
+              <!-- <p class="text-sm text-gray-500">{{ employee.email }}</p> -->
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span
+            class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+            [ngClass]="getStatusBadgeClass(employee.status)"
+          >
+            {{ employee.status }}
+          </span>
+          <span
+            class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+            [ngClass]="getRoleBadgeClass(employee.role)"
+          >
+            {{ employee.role }}
+          </span>
+        </div>
+        <div class="mt-4 pt-4 border-t border-gray-100">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-500">Department</span>
+            <span class="font-medium text-gray-900">{{
+              employee.departmentName || "N/A"
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-50 px-6 py-3 flex justify-end gap-2">
+        <a
+          [routerLink]="['/employees', employee.id]"
+          class="text-sm font-medium text-blue-600 hover:text-blue-700"
+        >
+          View
+        </a>
+        <a
+          *ngIf="isAdmin"
+          [routerLink]="['/employees', employee.id, 'edit']"
+          class="text-sm font-medium text-gray-600 hover:text-gray-700"
+        >
+          Edit
+        </a>
+        <button
+          *ngIf="isAdmin"
+          (click)="deleteEmployee(employee.id)"
+          class="text-sm font-medium text-red-600 hover:text-red-700"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table View -->
+  <div
+    *ngIf="!loading && filteredEmployees.length > 0 && viewMode === 'list'"
+    class="bg-white rounded-xl shadow-sm overflow-hidden"
+  >
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Name
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Email
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Department
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Status
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
+              Role
+            </th>
+            <th scope="col" class="relative px-6 py-3">
+              <span class="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr
+            *ngFor="let employee of filteredEmployees"
+            class="hover:bg-gray-50"
+          >
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div
+                  class="h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center"
+                >
+                  <span class="text-blue-700 font-semibold text-sm">
+                    {{ employee.firstName.charAt(0)
+                    }}{{ employee.lastName.charAt(0) }}
+                  </span>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    {{ employee.firstName }} {{ employee.lastName }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ employee.email }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ employee.departmentName || "N/A" }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [ngClass]="getStatusBadgeClass(employee.status)"
+              >
+                {{ employee.status }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="px-2.5 py-0.5 rounded-full text-xs font-medium"
+                [ngClass]="getRoleBadgeClass(employee.role)"
+              >
+                {{ employee.role }}
+              </span>
+            </td>
+            <td
+              class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+            >
+              <div class="flex items-center justify-end gap-4">
+                <a
+                  [routerLink]="['/employees', employee.id]"
+                  class="text-blue-600 hover:text-blue-900"
+                  >View</a
+                >
+                <a
+                  *ngIf="isAdmin"
+                  [routerLink]="['/employees', employee.id, 'edit']"
+                  class="text-gray-600 hover:text-gray-900"
+                  >Edit</a
+                >
+                <button
+                  *ngIf="isAdmin"
+                  (click)="deleteEmployee(employee.id)"
+                  class="text-red-600 hover:text-red-900"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
