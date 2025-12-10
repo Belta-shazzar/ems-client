@@ -1,0 +1,54 @@
+<div class="flex h-screen bg-primary-50 dark:bg-gray-900«">
+  <!-- Sidebar -->
+  <!-- <div
+    class="w-64 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+  >
+    <div class="p-6">
+      <h2
+        class="text-2xl font-semibold text-gray-800 dark:text-white flex items-center"
+      >
+        <lucide-angular name="settings" class="mr-2" size="24" />
+        Settings
+      </h2>
+      <nav class="mt-8">
+        <ul class="space-y-2">
+          <li>
+            <a
+              [routerLink]="['/settings/profile']"
+              routerLinkActive="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+              class="flex items-center px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <lucide-angular name="user" class="mr-3" size="18" />
+              Profile
+            </a>
+          </li>
+          <li>
+            <a
+              [routerLink]="['/settings/password']"
+              routerLinkActive="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+              class="flex items-center px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <lucide-angular name="lock" class="mr-3" size="18" />
+              Change Password
+            </a>
+          </li>
+          <li>
+            <a
+              [routerLink]="['/settings/appearance']"
+              routerLinkActive="bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400"
+              class="flex items-center px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            >
+              <lucide-angular name="lock" class="mr-3" size="18" />
+              Appearance
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div> -->
+
+  <!-- Main content -->
+  <div class="flex-1 overflow-auto p-8">
+    <router-outlet></router-outlet>
+  </div>
+</div>

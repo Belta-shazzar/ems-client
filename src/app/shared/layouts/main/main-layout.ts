@@ -3,19 +3,25 @@ import { LucideAngularModule, LogOut, Menu, X } from 'lucide-angular';
 import { AuthService } from '../../../core/services/auth.service';
 import { EmployeeRole } from '../../../core/models/auth.model';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterLinkActive } from "@angular/router";
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [LucideAngularModule, RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  imports: [
+    LucideAngularModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    CommonModule,
+  ],
   templateUrl: './main-layout.html',
-  styleUrl: './main-layout.css',
 })
 export class Main {
   private authService = inject(AuthService);
   isSidebarOpen = true;
   isMobileMenuOpen = false;
+  isSettinsMenuOpen = false;
 
   readonly LogOut = LogOut;
   readonly Menu = Menu;
@@ -48,5 +54,9 @@ export class Main {
 
   closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
+  }
+
+  toggleSettingsMenu(): void {
+    this.isSettinsMenuOpen = !this.isSettinsMenuOpen;
   }
 }

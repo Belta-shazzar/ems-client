@@ -14,13 +14,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/login/login').then((m) => m.Login),
   },
-  // {
-  // path: 'set-password',
-  // loadComponent: () =>
-  //   import('./features/auth/set-password/set-password.component').then(
-  //     (m) => m.SetPasswordComponent
-  //   ),
-  // },
   {
     path: '',
     loadComponent: () =>
@@ -49,51 +42,59 @@ export const routes: Routes = [
         data: { roles: [EmployeeRole.ADMIN] },
       },
       {
-      path: 'employees/:id',
-      loadComponent: () =>
-        import(
-          './features/employees/employee-detail/employee-detail'
-        ).then((m) => m.EmployeeDetail),
+        path: 'employees/:id',
+        loadComponent: () =>
+          import('./features/employees/employee-detail/employee-detail').then(
+            (m) => m.EmployeeDetail
+          ),
       },
-      // {
-      // path: 'employees/:id/edit',
-      // loadComponent: () =>
-      //   import(
-      //     './features/employees/employee-form/employee-form.component'
-      //   ).then((m) => m.EmployeeFormComponent),
-      // data: { roles: [EmployeeRole.ADMIN] },
-      // },
-      // {
-      // path: 'departments',
-      // loadComponent: () =>
-      //   import(
-      //     './features/departments/department-list/department-list.component'
-      //   ).then((m) => m.DepartmentListComponent),
-      // data: { roles: [EmployeeRole.ADMIN] },
-      // },
-      // {
-      // path: 'departments/new',
-      // loadComponent: () =>
-      //   import(
-      //     './features/departments/department-form/department-form.component'
-      //   ).then((m) => m.DepartmentFormComponent),
-      // data: { roles: [EmployeeRole.ADMIN] },
-      // },
-      // {
-      // path: 'departments/:id/edit',
-      // loadComponent: () =>
-      //   import(
-      //     './features/departments/department-form/department-form.component'
-      //   ).then((m) => m.DepartmentFormComponent),
-      // data: { roles: [EmployeeRole.ADMIN] },
-      // },
-      // {
-      // path: 'profile',
-      // loadComponent: () =>
-      //   import('./features/profile/profile.component').then(
-      //     (m) => m.ProfileComponent
-      //   ),
-      // },
+      {
+        path: 'employees/:id/edit',
+        loadComponent: () =>
+          import('./features/employees/employee-form/employee-form').then(
+            (m) => m.EmployeeForm
+          ),
+        data: { roles: [EmployeeRole.ADMIN] },
+      },
+      {
+        path: 'departments',
+        loadComponent: () =>
+          import('./features/departments/department-list/department-list').then(
+            (m) => m.DepartmentList
+          ),
+        data: { roles: [EmployeeRole.ADMIN] },
+      },
+      {
+        path: 'departments/new',
+        loadComponent: () =>
+          import('./features/departments/department-form/department-form').then(
+            (m) => m.DepartmentForm
+          ),
+        data: { roles: [EmployeeRole.ADMIN] },
+      },
+      {
+        path: 'departments/:id/edit',
+        loadComponent: () =>
+          import('./features/departments/department-form/department-form').then(
+            (m) => m.DepartmentForm
+          ),
+        data: { roles: [EmployeeRole.ADMIN] },
+      },
+      // ⭐ Lazy load the settings module
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('./features/settings/settings.routes').then(
+            (m) => m.SETTINGS_ROUTES
+          ),
+      },
+      {
+        path: 'chat',
+        loadChildren: () =>
+          import('./features/chat/chat.routes').then((m) => m.CHAT_ROUTES),
+        canActivate: [authGuard],
+        data: { roles: [EmployeeRole.ADMIN, EmployeeRole.MANAGER] },
+      },
     ],
   },
   {

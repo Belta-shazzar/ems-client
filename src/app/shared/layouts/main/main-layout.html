@@ -1,9 +1,9 @@
-<div class="min-h-screen bg-gray-50 flex">
+<div class="min-h-screen bg-primary-50 flex">
   <!-- Mobile menu button -->
   <button
     type="button"
     (click)="toggleMobileMenu()"
-    class="md:hidden fixed top-4 right-4 z-50 p-2 rounded-md text-gray-500 hover:bg-gray-100 focus:outline-none"
+    class="md:hidden fixed top-4 right-6 z-50 p-2 rounded-md text-gray-500 hover:bg-gray-100 focus:outline-none"
   >
     <lucide-icon [img]="isMobileMenuOpen ? X : Menu" [size]="24"></lucide-icon>
   </button>
@@ -21,7 +21,7 @@
           <a
             routerLink="/dashboard"
             routerLinkActive="bg-gray-100"
-            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
             <svg
               class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
@@ -44,7 +44,7 @@
           <a
             routerLink="/employees"
             routerLinkActive="bg-gray-100"
-            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
             <svg
               class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
@@ -68,7 +68,7 @@
           <a
             routerLink="/departments"
             routerLinkActive="bg-gray-100"
-            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
             <svg
               class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
@@ -88,10 +88,69 @@
           }
 
           <!-- Profile -->
+          <div>
+            <!-- routerLink="/settings"
+            routerLinkActive="bg-gray-100" -->
+            <a
+              (click)="toggleSettingsMenu()"
+              class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            >
+              <svg
+                class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.89 3.31.876 2.42 2.42a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.89 1.543-.876 3.31-2.42 2.42a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.89-3.31-.876-2.42-2.42.508-.88.228-2.013-1.065-2.572-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.89-1.543.876-3.31 2.42-2.42.88.508 2.013.228 2.572-1.065z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+              Settings
+            </a>
+
+            <div
+              class="overflow-hidden transition-all duration-300 ease-in-out"
+              [class.max-h-0]="!isSettinsMenuOpen"
+              [class.max-h-60]="isSettinsMenuOpen"
+              [class.opacity-0]="!isSettinsMenuOpen"
+              [class.opacity-100]="isSettinsMenuOpen"
+            >
+              <ul class="pl-8">
+                <li>
+                  <a
+                    [routerLink]="['/settings/profile']"
+                    routerLinkActive="bg-blue-50 text-blue-600"
+                    class="flex items-center px-4 py-2.5 rounded-lg text-gray-600 text-sm font-medium hover:bg-gray-100 transition-colors"
+                  >
+                    Profile
+                  </a>
+                </li>
+                <li>
+                  <a
+                    [routerLink]="['/settings/password']"
+                    routerLinkActive="bg-blue-50 text-blue-600"
+                    class="flex items-center px-4 py-2.5 rounded-lg text-gray-600 text-sm font-medium hover:bg-gray-100 transition-colors"
+                  >
+                    Change Password
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
           <a
-            routerLink="/profile"
+            routerLink="/chat"
             routerLinkActive="bg-gray-100"
-            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
             <svg
               class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
@@ -103,10 +162,10 @@
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                d="M7 8h10M7 12h4m1 8a9 9 0 110-18 9 9 0 010 18z"
               />
             </svg>
-            Profile
+            Chats
           </a>
         </nav>
       </div>
@@ -136,13 +195,13 @@
   <!-- MOBILE SIDEBAR -->
   @if (isMobileMenuOpen) {
   <div class="fixed inset-0 flex z-40 md:hidden" role="dialog">
-    <div
+    <!-- <div
       class="fixed inset-0 bg-gray-600 bg-opacity-75"
       (click)="closeMobileMenu()"
-    ></div>
+    ></div> -->
 
-    <div class="relative flex-1 flex flex-col max-w-xs w-full bg-white">
-      <div class="absolute top-0 right-0 -mr-12 pt-2">
+    <div class="relative flex-1 flex flex-col w-full bg-white">
+      <!-- <div class="absolute top-0 right-0 -mr-12 pt-2">
         <button
           type="button"
           (click)="closeMobileMenu()"
@@ -150,9 +209,10 @@
         >
           <lucide-icon [img]="X" [size]="24"></lucide-icon>
         </button>
-      </div>
+      </div> -->
 
-      <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
+      <!-- <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto"> -->
+      <div class="flex-1 h-0 pt-5 pb-4">
         <div class="shrink-0 flex items-center px-4">
           <h1 class="text-xl font-bold text-gray-900">Employee Portal</h1>
         </div>
@@ -163,7 +223,7 @@
             (click)="closeMobileMenu()"
             routerLink="/dashboard"
             routerLinkActive="bg-gray-100"
-            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
             <svg
               class="mr-4 h-6 w-6 text-gray-400 group-hover:text-gray-500"
@@ -181,41 +241,97 @@
             Dashboard
           </a>
 
-          <!-- SWITCH for mobile -->
-          @switch (currentUser?.role) { @case ('ADMIN') {
+          @if (isAdmin || isManager) {
           <a
-            (click)="closeMobileMenu()"
             routerLink="/employees"
-            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            routerLinkActive="bg-gray-100"
+            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
+            <svg
+              class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
             Employees
           </a>
-
+          } @if (isAdmin) {
           <a
-            (click)="closeMobileMenu()"
             routerLink="/departments"
-            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            routerLinkActive="bg-gray-100"
+            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
+            <svg
+              class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+              />
+            </svg>
             Departments
           </a>
-          } @case ('MANAGER') {
-          <a
-            (click)="closeMobileMenu()"
-            routerLink="/employees"
-            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-          >
-            Employees
-          </a>
-          } }
+          }
 
           <!-- Profile -->
           <a
-            (click)="closeMobileMenu()"
-            routerLink="/profile"
+            routerLink="/settings"
             routerLinkActive="bg-gray-100"
-            class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
           >
-            Profile
+            <svg
+              class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.89 3.31.876 2.42 2.42a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.89 1.543-.876 3.31-2.42 2.42a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.89-3.31-.876-2.42-2.42.508-.88.228-2.013-1.065-2.572-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.89-1.543.876-3.31 2.42-2.42.88.508 2.013.228 2.572-1.065z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+            Settings
+          </a>
+
+          <a
+            routerLink="/chat"
+            routerLinkActive="bg-gray-100"
+            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+          >
+            <svg
+              class="mr-3 h-6 w-6 text-gray-400 group-hover:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 8h10M7 12h4m1 8a9 9 0 110-18 9 9 0 010 18z"
+              />
+            </svg>
+            Chats
           </a>
         </nav>
       </div>

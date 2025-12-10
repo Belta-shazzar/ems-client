@@ -62,6 +62,7 @@ frontend/
         │       └── department-form/
         │           ├── department-form.component.ts
         │           └── department-form.component.html
+        |   └── settings/
         └── shared/
             ├── components/
             │   ├── navbar/

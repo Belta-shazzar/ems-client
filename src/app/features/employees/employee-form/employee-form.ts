@@ -27,6 +27,7 @@ import {
   UserCog,
   Building2,
 } from 'lucide-angular';
+import { Error } from "../../../shared/components/error/error";
 
 @Component({
   selector: 'app-employee-form',
@@ -35,9 +36,10 @@ import {
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterLink,
+    // RouterLink,
     LucideAngularModule,
-  ],
+    Error
+],
   templateUrl: './employee-form.html',
 })
 export class EmployeeForm implements OnInit {
@@ -127,31 +129,28 @@ export class EmployeeForm implements OnInit {
   }
 
   onSubmit(): void {
-    //   if (this.employeeForm.invalid) {
-    //     this.employeeForm.markAllAsTouched();
-    //     return;
-    //   }
-    //   this.loading = true;
-    //   this.error = '';
-    //   const employeeData: EmployeeRequest = {
-    //     ...this.employeeForm.value
-    //   };
-    //   // Remove password if it's empty (edit mode)
-    //   if (this.isEditMode && !employeeData.password) {
-    //     delete employeeData.password;
-    //   }
-    //   const request = this.isEditMode && this.employeeId
-    //     ? this.employeeService.updateEmployee(this.employeeId, employeeData)
-    //     : this.employeeService.createEmployee(employeeData);
-    //   request.subscribe({
-    //     next: () => {
-    //       this.router.navigate(['/employees']);
-    //     },
-    //     error: (err) => {
-    //       this.error = err.error?.message || 'An error occurred';
-    //       this.loading = false;
-    //     }
-    //   });
+      if (this.employeeForm.invalid) {
+        this.employeeForm.markAllAsTouched();
+        return;
+      }
+      this.loading = true;
+      this.error = '';
+      const employeeData: EmployeeRequest = {
+        ...this.employeeForm.value
+      };
+
+      const request = this.isEditMode && this.employeeId
+        ? this.employeeService.updateEmployee(this.employeeId, employeeData)
+        : this.employeeService.createEmployee(employeeData);
+      request.subscribe({
+        next: () => {
+          this.router.navigate(['/employees']);
+        },
+        error: (err) => {
+          this.error = err.error?.message || 'An error occurred';
+          this.loading = false;
+        }
+      });
   }
 
   get f() {

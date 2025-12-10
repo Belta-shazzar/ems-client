@@ -16,6 +16,7 @@ import {
   LoginResponse,
 } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
+import { ChatService } from './chat.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ import { environment } from '../../../environments/environment';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  // private chatService = inject(ChatService)
   private currentEmployeeSubject = new BehaviorSubject<Employee | null>(
     this.getEmployeeFromStorage()
   );
@@ -38,6 +40,7 @@ export class AuthService {
   }
 
   login(request: LoginRequest): Observable<Employee> {
+    console.log('It got here!')
     return this.http
       .post<LoginResponse>(`${environment.authUrl}/auth/login`, request)
       .pipe(
@@ -50,6 +53,8 @@ export class AuthService {
         tap((employee) => {
           localStorage.setItem('currentEmployee', JSON.stringify(employee));
           this.currentEmployeeSubject.next(employee);
+
+          // this.chatService.connect();
         }),
         catchError((err) => {
           // clean up tokens if anything fails
@@ -63,13 +68,8 @@ export class AuthService {
   }
 
   getAuthenticatedEmployee(token: string): Observable<Employee> {
-    // const headers = new HttpHeaders({
-    //   Authorization: `Bearer ${token}`,
-    // });
-
     return this.http.get<Employee>(
       `${environment.employeeUrl}/employees/authenticated`,
-      // { headers }
     );
   }
 

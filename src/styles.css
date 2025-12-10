@@ -1,6 +1,12 @@
+/* ---------------------------------------------------
+   Tailwind Base
+--------------------------------------------------- */;
+@tailwind utilities;
 @import "tailwindcss";
 
-/* Define theme tokens */
+/* ---------------------------------------------------
+   Theme Tokens (Tailwind CSS Variables)
+--------------------------------------------------- */
 @theme {
   --color-primary-50: #eff6ff;
   --color-primary-100: #dbeafe;
@@ -16,17 +22,67 @@
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
-/* Base styles */
+/* ---------------------------------------------------
+   Light & Dark CSS Variables
+   (Allow overriding Tailwind colors dynamically)
+--------------------------------------------------- */
+:root {
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+}
+
+.dark {
+  --color-primary-500: #60a5fa;
+  --color-primary-600: #3b82f6;
+  --color-primary-700: #2563eb;
+}
+
+/* ---------------------------------------------------
+   Optional Utility Classes Using CSS Variables
+--------------------------------------------------- */
+.bg-primary-500 {
+  background-color: var(--color-primary-500);
+}
+
+.hover\:bg-primary-600:hover {
+  background-color: var(--color-primary-600);
+}
+
+.focus\:ring-primary-500:focus {
+  --tw-ring-color: var(--color-primary-500);
+}
+
+.text-primary-600 {
+  color: var(--color-primary-600);
+}
+
+/* You defined border-primary-300, so let’s keep it */
+.border-primary-300 {
+  border-color: var(--color-primary-300);
+}
+
+/* Global transition for theme switching */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* ---------------------------------------------------
+   Base Styles
+--------------------------------------------------- */
 @layer base {
   body {
     @apply bg-gray-50 text-gray-900 font-sans;
   }
 }
 
-/* Custom components */
+/* ---------------------------------------------------
+   Custom Components
+--------------------------------------------------- */
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 
+           focus:outline-none focus:ring-2 focus:ring-offset-2;
   }
 
   .btn-primary {
@@ -42,11 +98,14 @@
   }
 
   .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg 
+           focus:ring-2 focus:ring-primary-500 focus:border-transparent 
+           transition-all;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 p-6;
+    @apply bg-white rounded-xl shadow-sm hover:shadow-md 
+           transition-shadow duration-200 p-6;
   }
 
   .badge {
@@ -70,7 +129,9 @@
   }
 }
 
-/* Custom scrollbar */
+/* ---------------------------------------------------
+   Scrollbar Styling
+--------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

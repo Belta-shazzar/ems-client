@@ -1,0 +1,97 @@
+<div class="max-w-md mx-auto">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Appearance</h1>
+    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+      Customize how the application looks and feels
+    </p>
+  </div>
+
+  <div class="space-y-6">
+    <!-- Theme Selection -->
+    <div>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Theme
+      </h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <button
+          (click)="setTheme('light')"
+          [class.ring-2]="theme() === 'light'"
+          [class.ring-offset-2]="theme() === 'light'"
+          [class.ring-blue-500]="theme() === 'light'"
+          class="relative block w-full rounded-lg border border-gray-300 dark:border-gray-600 p-4 text-left hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none transition-colors"
+        >
+          <div class="flex items-center">
+            <div class="w-6 h-6 mr-3 text-yellow-500">
+              <lucide-angular name="sun" class="w-full h-full" />
+            </div>
+            <span class="text-sm font-medium text-gray-900 dark:text-white"
+              >Light</span
+            >
+          </div>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Light theme with white backgrounds
+          </p>
+        </button>
+
+        <button
+          (click)="setTheme('dark')"
+          [class.ring-2]="theme() === 'dark'"
+          [class.ring-offset-2]="theme() === 'dark'"
+          [class.ring-blue-500]="theme() === 'dark'"
+          class="relative block w-full rounded-lg border border-gray-300 dark:border-gray-600 p-4 text-left hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none transition-colors"
+        >
+          <div class="flex items-center">
+            <div class="w-6 h-6 mr-3 text-blue-400">
+              <lucide-angular name="moon" class="w-full h-full" />
+            </div>
+            <span class="text-sm font-medium text-gray-900 dark:text-white"
+              >Dark</span
+            >
+          </div>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Dark theme with dark backgrounds
+          </p>
+        </button>
+
+        <button
+          (click)="setTheme('system')"
+          [class.ring-2]="theme() === 'system'"
+          [class.ring-offset-2]="theme() === 'system'"
+          [class.ring-blue-500]="theme() === 'system'"
+          class="relative block w-full rounded-lg border border-gray-300 dark:border-gray-600 p-4 text-left hover:border-blue-500 dark:hover:border-blue-400 focus:outline-none transition-colors"
+        >
+          <div class="flex items-center">
+            <div class="w-6 h-6 mr-3 text-gray-500">
+              <lucide-angular name="monitor" class="w-full h-full" />
+            </div>
+            <span class="text-sm font-medium text-gray-900 dark:text-white"
+              >System</span
+            >
+          </div>
+          <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Match your system preferences
+          </p>
+        </button>
+      </div>
+    </div>
+
+    <!-- Accent Color (Optional) -->
+    <div>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Accent Color
+      </h2>
+      <div class="flex space-x-3">
+        <button
+          *ngFor="let color of accentColors"
+          (click)="setAccentColor(color)"
+          [class.ring-2]="accentColor() === color"
+          [class.ring-offset-2]="accentColor() === color"
+          [class.ring-blue-500]="accentColor() === color"
+          [style.backgroundColor]="color"
+          class="w-10 h-10 rounded-full focus:outline-none"
+          [title]="'Set ' + color + ' as accent color'"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

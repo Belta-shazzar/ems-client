@@ -13,7 +13,6 @@ import { LucideAngularModule, Mail, Lock, LogIn } from 'lucide-angular';
   selector: 'app-login',
   imports: [ReactiveFormsModule, RouterLink, LucideAngularModule],
   templateUrl: './login.html',
-  styleUrl: './login.css',
 })
 export class Login {
   private fb = inject(FormBuilder);
