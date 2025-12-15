@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -40,9 +40,11 @@ export type ViewMode = 'grid' | 'list';
   templateUrl: './employee-list.html',
 })
 export class EmployeeList implements OnInit {
-  private employeeService = inject(EmployeeService);
   private authService = inject(AuthService);
-  // private router = inject(Router);
+  private employeeService = inject(EmployeeService);
+
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
   // private dialog = inject(MatDialog);
 
   readonly Users = Users;
@@ -72,51 +74,38 @@ export class EmployeeList implements OnInit {
   currentUser = this.authService.currentEmployeeValue;
 
   filters = {
+    keyword: null as string | null,
     status: null as EmployeeStatus | null,
     role: null as EmployeeRole | null,
-    page: 1,
+    page: this.currentPage,
     size: 12,
   };
 
   ngOnInit(): void {
-    this.loadEmployees();
+    this.route.queryParamMap.subscribe((params) => {
+      this.currentPage = Number(params.get('page')) || 1;
+
+      // this.fetchEmployees();
+      this.loadEmployees();
+    });
   }
 
   loadEmployees(): void {
     this.loading = true;
     const viewMode =
       (localStorage.getItem('employeeView') as ViewMode) || 'list';
+    this.viewMode = viewMode;
 
-    this.employeeService.getAllEmployees().subscribe({
-      next: (employees) => {
-        this.employees = employees.content;
-        this.filteredEmployees = employees.content;
-        this.displayedPages =
-          employees.pagination.totalPages < 5
-            ? employees.pagination.totalPages
-            : 5;
-        this.employeeCount = employees.pagination.totalElements;
-        this.totalPages = employees.pagination.totalPages;
-        this.currentPage = employees.pagination.page;
+    this.fetchEmployees();
+    // this.displayedPages = this.totalPages < 5 ? this.totalPages : 5;
 
-        this.viewMode = viewMode;
-        this.loading = false;
-      },
-      error: () => {
-        this.loading = false;
-      },
-    });
+    // this.loading = false;
   }
 
   onSearch(): void {
     const term = this.searchTerm.toLowerCase();
-    this.filteredEmployees = this.employees.filter(
-      (emp) =>
-        emp.firstName.toLowerCase().includes(term) ||
-        emp.lastName.toLowerCase().includes(term) ||
-        emp.email.toLowerCase().includes(term) ||
-        (emp.departmentName && emp.departmentName.toLowerCase().includes(term))
-    );
+    this.filters.keyword = term;
+    this.fetchEmployees();
   }
 
   private buildQueryParams() {
@@ -135,12 +124,17 @@ export class EmployeeList implements OnInit {
     const params = this.buildQueryParams();
 
     this.employeeService.getAllEmployees(params).subscribe({
-      next: (res) => {
-        console.log('The response: ', res)
-        this.employees = res.content;
-        this.filteredEmployees = res.content;
-        this.totalPages = res.pagination.totalPages;
-        this.employeeCount = res.pagination.totalElements;
+      next: (employees) => {
+        this.employees = employees.content;
+        this.filteredEmployees = employees.content;
+        this.totalPages = employees.pagination.totalPages;
+        this.employeeCount = employees.pagination.totalElements;
+        this.currentPage = employees.pagination.page;
+        this.displayedPages = this.totalPages < 5 ? this.totalPages : 5;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
       },
     });
   }
@@ -207,21 +201,50 @@ export class EmployeeList implements OnInit {
     }
   }
 
-  get pages() {
-    return Array.from({ length: this.displayedPages }, (_, i) => i + 1);
+  get pages(): number[] {
+    if (this.totalPages <= this.displayedPages) {
+      // Show all pages if total is small
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    }
+
+    const half = Math.floor(this.displayedPages / 2);
+
+    let start = this.currentPage - half;
+    let end = this.currentPage + half;
+
+    // Clamp start
+    if (start < 1) {
+      start = 1;
+      end = this.displayedPages;
+    }
+
+    // Clamp end
+    if (end > this.totalPages) {
+      end = this.totalPages;
+      start = this.totalPages - this.displayedPages + 1;
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
   onStatusChange(status: EmployeeStatus | 'ALL') {
     this.selectedStatus = status;
     this.filters.status = status === 'ALL' ? null : status;
     this.filters.page = 1;
-    this.fetchEmployees()
+    this.fetchEmployees();
   }
-  
+
   onRoleChange(role: EmployeeRole | 'ALL') {
     this.selectedRole = role;
     this.filters.role = role === 'ALL' ? null : role;
     this.filters.page = 1;
-    this.fetchEmployees()
+    this.fetchEmployees();
+  }
+
+  updatePage(newPage: number) {
+    this.currentPage = newPage;
+    this.filters.page = newPage;
+    console.log('The filter: ', this.filters);
+    this.fetchEmployees();
   }
 }

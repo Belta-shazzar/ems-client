@@ -38,7 +38,7 @@
       </div>
 
       <div class="flex items-center gap-3">
-         <app-dropdown
+        <app-dropdown
           [options]="employeeRoles"
           [selected]="selectedRole"
           allLabel="All Roles"
@@ -339,23 +339,38 @@
     </div>
     }
     <div class="page-control my-4 py-1 flex justify-center items-center">
-      <lucide-icon
-        [img]="ChevronLeft"
-        class="text-gray-400 hover:bg-primary-200 p-1 rounded-full"
-        [size]="30"
-      ></lucide-icon>
+      <button
+        type="button"
+        (click)="currentPage > 1 && updatePage(currentPage - 1)"
+        [disabled]="currentPage === 1"
+        class="p-1 rounded-full text-gray-400 hover:bg-primary-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <!-- class="text-gray-400 hover:bg-primary-200 p-1 rounded-full" -->
+        <lucide-icon [img]="ChevronLeft" [size]="25"></lucide-icon>
+      </button>
 
       @for (page of pages; track page) {
-      <span class="text-gray-500 hover:bg-primary-200 py-1 px-3 rounded-full">{{
-        page
-      }}</span>
+      <button
+        class="py-1 px-3 rounded-full cursor-default transiton"
+        [ngClass]="{
+          'text-primary-600 font-semibold': page === currentPage,
+          'text-gray-500 hover:bg-primary-200': page !== currentPage
+        }"
+        (click)="updatePage(page)"
+      >
+        {{ page }}
+      </button>
       }
 
-      <lucide-icon
-        [img]="ChevronRight"
-        class="text-gray-400 hover:bg-primary-200 p-1 rounded-full"
-        [size]="30"
-      ></lucide-icon>
+      <button
+        type="button"
+        (click)="currentPage < totalPages && updatePage(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+        class="p-1 rounded-full text-gray-400 hover:bg-primary-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <!-- class="text-gray-400 hover:bg-primary-200 p-1 rounded-full" -->
+        <lucide-icon [img]="ChevronRight" [size]="25"></lucide-icon>
+      </button>
     </div>
   </div>
   }

@@ -24,7 +24,6 @@ export class EmployeeService {
   }
 
   getAllEmployees(params?: any): Observable<PaginatedEmployees> {
-    console.log('The param: ', params)
     return this.http.get<PaginatedEmployees>(
       `${environment.employeeUrl}/employees`,
       { params }
