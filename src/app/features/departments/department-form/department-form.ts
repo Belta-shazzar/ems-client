@@ -16,7 +16,7 @@ import {
   Building2,
   Loader2,
 } from 'lucide-angular';
-import { Error } from "../../../shared/components/error/error";
+import { Error } from '../../../shared/components/error/error';
 
 @Component({
   selector: 'app-department-form',
@@ -26,8 +26,8 @@ import { Error } from "../../../shared/components/error/error";
     ReactiveFormsModule,
     FormsModule,
     LucideAngularModule,
-    Error
-],
+    Error,
+  ],
   templateUrl: './department-form.html',
 })
 export class DepartmentForm implements OnInit {
@@ -59,7 +59,7 @@ export class DepartmentForm implements OnInit {
         ],
       ],
       description: ['', [Validators.maxLength(500)]],
-      status: [true],
+      active: [true],
     });
   }
 
@@ -122,7 +122,7 @@ export class DepartmentForm implements OnInit {
       this.departmentForm.reset({
         name: '',
         description: '',
-        status: true,
+        active: true,
       });
     }
   }
@@ -139,8 +139,8 @@ export class DepartmentForm implements OnInit {
     return this.departmentForm.get('description');
   }
 
-  get status() {
-    return this.departmentForm.get('status');
+  get active() {
+    return this.departmentForm.get('active');
   }
 
   get f() {

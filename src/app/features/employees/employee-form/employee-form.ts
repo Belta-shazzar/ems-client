@@ -125,7 +125,7 @@ export class EmployeeForm implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/employees']);
   }
 
   onSubmit(): void {

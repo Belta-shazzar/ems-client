@@ -20,6 +20,27 @@ export interface EmployeeRequest {
   departmentId: string;
 }
 
+export interface Pagination {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+}
+
+export interface PaginatedEmployees {
+  content: Employee[];
+  pagination: Pagination;
+}
+
+export interface DashboardData {
+  totalEmployees: number;
+  activeEmployees: number;
+  pendingEmployees: number;
+  activeDepartment: number;
+}
+
 export enum EmployeeStatus {
   PENDING = 'PENDING',
   ACTIVE = 'ACTIVE',

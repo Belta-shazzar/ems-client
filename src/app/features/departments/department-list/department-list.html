@@ -54,17 +54,17 @@
   </div>
 
   <!-- Loading State -->
-  <div *ngIf="loading" class="flex items-center justify-center py-12">
+  @if (loading) {
+  <div class="flex items-center justify-center py-12">
     <div
       class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"
     ></div>
   </div>
+  }
 
   <!-- Empty State -->
-  <div
-    *ngIf="!loading && filteredDepartments.length === 0"
-    class="text-center py-12"
-  >
+  @if (!loading && filteredDepartments.length === 0) {
+  <div class="text-center py-12">
     <div class="mx-auto h-16 w-16 text-gray-400">
       <lucide-icon [img]="Building2" [size]="64"></lucide-icon>
     </div>
@@ -86,58 +86,92 @@
       </a>
     </div>
   </div>
+  }
 
   <!-- Departments Grid -->
-  <div
-    *ngIf="!loading && filteredDepartments.length > 0"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-  >
-    <div
-      *ngFor="let dept of filteredDepartments"
-      class="card hover:shadow-md transition-shadow cursor-pointer"
-      [routerLink]="['/departments', dept.id]"
-    >
+  @if (!loading && filteredDepartments.length > 0) {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (dept of filteredDepartments; track dept.id) {
+    <div class="card hover:shadow-md transition-shadow">
       <div class="flex items-start justify-between">
-        <div class="flex-1">
-          <div class="flex items-center gap-3">
-            <div class="p-2 bg-purple-100 rounded-lg">
-              <lucide-icon
-                [img]="Building2"
-                class="text-purple-600"
-                [size]="20"
-              ></lucide-icon>
+        <div class="flex-1 cursor-pointer">
+          <div class="flex items-center gap-3 mb-3">
+            <div
+              [routerLink]="['/departments', dept.id]"
+              class="flex gap-3 items-center py-2 rounded-lg w-full"
+            >
+              <div class="bg-purple-100 p-3 rounded">
+                <lucide-icon
+                  [img]="Building2"
+                  class="text-purple-600"
+                  [size]="20"
+                ></lucide-icon>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900">
+                {{ dept.name }}
+              </h3>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900">{{ dept.name }}</h3>
+
+            <!-- Buttons -->
+            <div class="flex gap-2 items-center">
+              <button
+                type="button"
+                (click)="editDepartment(dept.id, $event)"
+                class="p-1 text-gray-400 hover:text-blue-500 rounded-full hover:bg-blue-50"
+                title="Edit Department"
+              >
+                <lucide-icon [img]="Edit" [size]="18"></lucide-icon>
+              </button>
+              <button
+                type="button"
+                (click)="deleteDepartment(dept.id, $event)"
+                class="p-1 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50"
+                title="Delete Department"
+              >
+                <lucide-icon [img]="Trash2" [size]="18"></lucide-icon>
+              </button>
+            </div>
           </div>
           <div class="mt-4 space-y-2 text-sm text-gray-600">
-            <div class="flex items-center gap-2">
-              <svg
-                class="h-4 w-4 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <span>Created {{ formatDate(dept.createdAt) }}</span>
+            <div class="flex items-center justify-between w-full">
+              <div class="flex gap-1 py-2">
+                <svg
+                  class="h-4 w-4 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>Created {{ formatDate(dept.createdAt) }}</span>
+              </div>
+              <div>
+                <!-- Status Badge -->
+                <span
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [class.bg-green-100]="dept.active === true"
+                  [class.text-green-800]="dept.active === true"
+                  [class.bg-gray-100]="
+                    dept.active === false || dept.active === undefined
+                  "
+                  [class.text-gray-800]="
+                    dept.active === false || dept.active === undefined
+                  "
+                >
+                  {{ dept.active === true ? "Active" : "Inactive" }}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <button
-            (click)="deleteDepartment(dept.id, $event)"
-            class="p-1 text-gray-400 hover:text-red-500 rounded-full hover:bg-red-50"
-            title="Delete Department"
-          >
-            <lucide-icon [img]="Trash2" [size]="18"></lucide-icon>
-          </button>
         </div>
       </div>
     </div>
+    }
   </div>
+  }
 </div>

@@ -54,14 +54,14 @@ export class Chat implements OnInit, OnDestroy, AfterViewChecked {
   private async loadEmployees() {
     try {
       // Load employees with roles lower than or equal to current user
-      const allEmployees = await this.employeeService
-        .getAllEmployees()
-        .toPromise();
-      this.employees = allEmployees?.filter(
-        (emp: any) =>
-          emp.id !== this.currentUser.userId &&
-          this.hasPermissionToMessage(emp.role)
-      ) || [];
+      // const allEmployees = await this.employeeService
+      //   .getAllEmployees()
+      //   .toPromise();
+      // this.employees = allEmployees?.filter(
+      //   (emp: any) =>
+      //     emp.id !== this.currentUser.userId &&
+      //     this.hasPermissionToMessage(emp.role)
+      // ) || [];
     } catch (error) {
       console.error('Error loading employees:', error);
     }

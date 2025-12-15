@@ -2,7 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Employee, EmployeeRequest } from '../models/employee.model';
+import {
+  DashboardData,
+  Employee,
+  EmployeeRequest,
+  PaginatedEmployees,
+} from '../models/employee.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -12,8 +17,18 @@ export class EmployeeService {
   private http = inject(HttpClient);
   // private authService = inject(AuthService);
 
-  getAllEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`${environment.employeeUrl}/employees`);
+  getEmployeesStatData(): Observable<DashboardData> {
+    return this.http.get<DashboardData>(
+      `${environment.employeeUrl}/employees/dashboard`
+    );
+  }
+
+  getAllEmployees(params?: any): Observable<PaginatedEmployees> {
+    console.log('The param: ', params)
+    return this.http.get<PaginatedEmployees>(
+      `${environment.employeeUrl}/employees`,
+      { params }
+    );
   }
 
   getEmployeeById(id: string): Observable<Employee> {

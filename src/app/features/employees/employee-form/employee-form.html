@@ -79,7 +79,7 @@
 
           <!-- Contact Information -->
           <div>
-            <h2 class="text-lg font-medium text-gray-900 mb-4">
+            <h2 class="text-lg font-medium text-gray-900 my-4">
               Contact Information
             </h2>
             <div class="space-y-4">
@@ -165,7 +165,7 @@
 
           <!-- Employment Details -->
           <div>
-            <h2 class="text-lg font-medium text-gray-900 mb-4">
+            <h2 class="text-lg font-medium text-gray-900 my-4">
               Employment Details
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,13 +188,13 @@
                   <select
                     id="role"
                     formControlName="role"
-                    class="input pl-10"
+                    class="input pl-10 capitalize"
                     [class.border-red-500]="
                       f['role'].invalid && f['role'].touched
                     "
                   >
                     <option *ngFor="let role of roles" [value]="role">
-                      {{ role }}
+                      {{ role.toLowerCase() | titlecase }}
                     </option>
                   </select>
                 </div>
@@ -221,7 +221,7 @@
                   "
                 >
                   <option *ngFor="let status of statuses" [value]="status">
-                    {{ status }}
+                    {{ status.toLowerCase() | titlecase }}
                   </option>
                 </select>
                 <div

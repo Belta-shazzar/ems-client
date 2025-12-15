@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { DepartmentService } from '../../../core/services/department.service';
 import { Department } from '../../../core/models/department.model';
@@ -16,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-department-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, LucideAngularModule, FormsModule],
+  imports: [RouterLink, LucideAngularModule, FormsModule],
   templateUrl: './department-list.html',
 })
 export class DepartmentList implements OnInit {
@@ -28,7 +27,7 @@ export class DepartmentList implements OnInit {
   readonly Building2 = Building2;
   readonly Plus = Plus;
   readonly Search = Search;
-  // readonly Edit = Edit;
+  readonly Edit = Edit;
   readonly Trash2 = Trash2;
 
   constructor(
@@ -47,6 +46,7 @@ export class DepartmentList implements OnInit {
         this.departments = departments;
         this.filteredDepartments = [...departments];
         this.loading = false;
+        console.log('The department list: ', this.filteredDepartments)
       },
       error: () => {
         this.loading = false;
@@ -65,8 +65,13 @@ export class DepartmentList implements OnInit {
     );
   }
 
+  editDepartment(id: string, event: Event): void {
+    event.stopPropagation();
+    this.router.navigate(['/departments', id, 'edit']);
+  }
+
   deleteDepartment(id: string, event: Event): void {
-    //   event.stopPropagation();
+    event.stopPropagation();
     //   if (confirm('Are you sure you want to delete this department?')) {
     //     this.departmentService.deleteDepartment(id).subscribe({
     //       next: () => {

@@ -53,10 +53,16 @@ export class Dashboard implements OnInit {
   loadDashboardData(): void {
     this.loading = true;
 
-    this.employeeService.getAllEmployees().subscribe({
-      next: (employees) => {
-        this.employees = employees;
-        this.calculateStats();
+    this.employeeService.getEmployeesStatData().subscribe({
+      next: (data) => {
+        console.log('The data: ', data);
+        // this.employees = employees?.content;
+        // this.calculateStats();
+        this.stats.totalEmployees = data.totalEmployees;
+        this.stats.activeEmployees = data.activeEmployees;
+        this.stats.pendingEmployees = data.pendingEmployees;
+        this.stats.totalDepartments = data.activeDepartment;
+
         this.loading = false;
       },
       error: () => {
@@ -64,25 +70,31 @@ export class Dashboard implements OnInit {
       },
     });
 
+    this.employeeService.getAllEmployees().subscribe({
+      next: (employees) => {
+        this.employees = employees.content;
+      },
+    });
+
     if (this.isAdmin) {
       this.departmentService.getAllDepartments().subscribe({
         next: (departments) => {
           this.departments = departments;
-          this.stats.totalDepartments = departments.length;
+          // this.stats.totalDepartments = departments.length;
         },
       });
     }
   }
 
-  calculateStats(): void {
-    this.stats.totalEmployees = this.employees.length;
-    this.stats.activeEmployees = this.employees.filter(
-      (e) => e.status === 'ACTIVE'
-    ).length;
-    this.stats.pendingEmployees = this.employees.filter(
-      (e) => e.status === 'PENDING'
-    ).length;
-  }
+  // calculateStats(): void {
+  //   this.stats.totalEmployees = this.employees.length;
+  //   this.stats.activeEmployees = this.employees.filter(
+  //     (e) => e.status === 'ACTIVE'
+  //   ).length;
+  //   this.stats.pendingEmployees = this.employees.filter(
+  //     (e) => e.status === 'PENDING'
+  //   ).length;
+  // }
 
   get isAdmin(): boolean {
     return this.currentEmployee?.role === 'ADMIN';

@@ -40,7 +40,6 @@ export class AuthService {
   }
 
   login(request: LoginRequest): Observable<Employee> {
-    console.log('It got here!')
     return this.http
       .post<LoginResponse>(`${environment.authUrl}/auth/login`, request)
       .pipe(

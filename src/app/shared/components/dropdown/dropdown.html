@@ -1,0 +1,57 @@
+<div class="relative">
+  <!-- Trigger -->
+  <button
+    type="button"
+    (click)="toggle()"
+    class="min-w-[140px] flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none"
+  >
+    <span class="text-sm text-gray-700">
+      {{ selected === "ALL" ? allLabel : selected.toLowerCase() | titlecase }}
+    </span>
+
+    <svg
+      class="h-4 w-4 text-gray-400 transition-transform"
+      [class.rotate-180]="open"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </button>
+
+  <!-- Dropdown -->
+  @if (open) {
+  <div
+    class="absolute z-20 mt-2 w-[140px] bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+  >
+    <!-- ALL -->
+    <button
+      type="button"
+      (click)="select('ALL')"
+      class="min-w-[140px] text-left px-4 py-2 text-sm hover:bg-gray-100"
+      [class.bg-gray-100]="activeIndex === 0"
+    >
+      <!-- [class.bg-gray-100]="selected === 'ALL'" -->
+      {{ allLabel }}
+    </button>
+
+    @for (option of options; track option; let i = $index) {
+    <button
+      type="button"
+      (click)="select(option)"
+      class="min-w-[140px] text-left px-4 py-2 text-sm hover:bg-gray-100"
+      [class.bg-gray-100]="activeIndex === i + 1"
+    >
+      <!-- [class.bg-gray-100]="selected === option" -->
+      {{ option.toLowerCase() | titlecase }}
+    </button>
+    }
+  </div>
+  }
+</div>

@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-primary-50 flex">
+<div class="h-screen bg-primary-50 flex">
   <!-- Mobile menu button -->
   <button
     type="button"
@@ -171,19 +171,23 @@
       </div>
 
       <!-- User bottom -->
-      <div class="shrink-0 flex border-t border-gray-200 p-4">
-        <div class="flex items-center">
-          <div>
-            <div class="text-base font-medium text-gray-800">
+      <div
+        class="shrink-0 flex border-t border-gray-200 p-4"
+      >
+        <div class="flex items-center w-full">
+          <div class="flex-1 min-w-0">
+            <!-- allows truncation -->
+            <p class="text-base font-medium text-gray-800 truncate">
               {{ currentUser?.email }}
-            </div>
-            <div class="text-sm font-medium text-gray-500">
-              {{ currentUser?.role }}
-            </div>
+            </p>
+            <p class="text-sm font-medium text-gray-500 truncate">
+              {{ currentUser?.role?.toLowerCase() | titlecase }}
+            </p>
           </div>
+
           <button
             (click)="logout()"
-            class="ml-auto shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none"
+            class="ml-4 shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none"
           >
             <lucide-icon [img]="LogOut" [size]="20"></lucide-icon>
           </button>
@@ -340,12 +344,12 @@
       <div class="shrink-0 flex border-t border-gray-200 p-4">
         <div class="flex items-center w-full">
           <div class="">
-            <div class="text-base font-medium text-gray-800">
+            <p class="text-base font-medium text-gray-800">
               {{ currentUser?.email }}
-            </div>
-            <div class="text-sm font-medium text-gray-500">
-              {{ currentUser?.role }}
-            </div>
+            </p>
+            <p class="text-sm font-medium text-gray-500">
+              {{ currentUser?.role?.toLowerCase() | titlecase }}
+            </p>
           </div>
           <button
             (click)="logout()"
