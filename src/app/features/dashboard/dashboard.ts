@@ -55,7 +55,6 @@ export class Dashboard implements OnInit {
 
     this.employeeService.getEmployeesStatData().subscribe({
       next: (data) => {
-        console.log('The data: ', data);
         // this.employees = employees?.content;
         // this.calculateStats();
         this.stats.totalEmployees = data.totalEmployees;

@@ -22,6 +22,9 @@ import {
 } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 import { Dropdown } from '../../../shared/components/dropdown/dropdown';
+import { StoreService } from '../../../core/services/store.service';
+import { Department } from '../../../core/models/department.model';
+import { DepartmentService } from '../../../core/services/department.service';
 // import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 // import { MatDialog } from '@angular/material/dialog';
 
@@ -41,7 +44,9 @@ export type ViewMode = 'grid' | 'list';
 })
 export class EmployeeList implements OnInit {
   private authService = inject(AuthService);
+  private storeService = inject(StoreService);
   private employeeService = inject(EmployeeService);
+  private departmentService = inject(DepartmentService);
 
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -65,16 +70,19 @@ export class EmployeeList implements OnInit {
   employeeCount: number = 0;
   viewMode: ViewMode | undefined;
   employees: Employee[] = [];
+  departments: Department[] | any = [];
   filteredEmployees: Employee[] = [];
   selectedStatus: EmployeeStatus | 'ALL' = 'ALL';
   employeeStatuses: EmployeeStatus[] = Object.values(EmployeeStatus);
   selectedRole: EmployeeRole | 'ALL' = 'ALL';
+  selectedDepartment: string = 'ALL';
   employeeRoles: EmployeeRole[] = Object.values(EmployeeRole);
 
   currentUser = this.authService.currentEmployeeValue;
 
   filters = {
     keyword: null as string | null,
+    departmentId: null as string | null,
     status: null as EmployeeStatus | null,
     role: null as EmployeeRole | null,
     page: this.currentPage,
@@ -82,19 +90,40 @@ export class EmployeeList implements OnInit {
   };
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe((params) => {
-      this.currentPage = Number(params.get('page')) || 1;
+    // this.route.queryParamMap.subscribe((params) => {
+    //   // this.currentPage = Number(params.get('page')) || 1;
 
-      // this.fetchEmployees();
+    //   // this.fetchEmployees();
+    //   this.loadEmployees();
+    // });
+    this.route.paramMap.subscribe((params) => {
+      const departmentId = params.get('id');
+
+      if (departmentId) {
+        this.applyDepartmentFromRoute(departmentId);
+      }
+
       this.loadEmployees();
     });
   }
 
   loadEmployees(): void {
     this.loading = true;
+    const cachedDepartments = this.storeService.getDepartmentsSnapshot();
     const viewMode =
       (localStorage.getItem('employeeView') as ViewMode) || 'list';
     this.viewMode = viewMode;
+
+    if (cachedDepartments) {
+      this.departments = cachedDepartments;
+    } else {
+      this.departmentService.getAllDepartments().subscribe({
+        next: (departments) => {
+          this.departments = departments;
+        },
+        error: () => {},
+      });
+    }
 
     this.fetchEmployees();
     // this.displayedPages = this.totalPages < 5 ? this.totalPages : 5;
@@ -241,10 +270,41 @@ export class EmployeeList implements OnInit {
     this.fetchEmployees();
   }
 
+  onDepartmentChange(department: any | 'ALL') {
+    this.selectedDepartment = department.name;
+    this.filters.departmentId = department === 'ALL' ? null : department.id;
+    this.filters.page = 1;
+    this.fetchEmployees();
+
+    this.route.paramMap.subscribe((params) => {
+      const departmentId = params.get('id');
+
+      if (departmentId) {
+        this.router.navigate(['/department', department.id, 'employees'], {
+          queryParamsHandling: 'preserve',
+        });
+      }
+
+      this.loadEmployees();
+    });
+  }
+
+  private applyDepartmentFromRoute(departmentId: string) {
+    const department = this.storeService
+      .getDepartmentsSnapshot()
+      ?.find((d) => d.id === departmentId);
+
+    if (department) {
+      this.onDepartmentChange(department);
+    } else {
+      // fallback if store is empty
+      this.filters.departmentId = departmentId;
+    }
+  }
+
   updatePage(newPage: number) {
     this.currentPage = newPage;
     this.filters.page = newPage;
-    console.log('The filter: ', this.filters);
     this.fetchEmployees();
   }
 }

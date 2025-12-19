@@ -3,10 +3,10 @@
   <button
     type="button"
     (click)="toggle()"
-    class="min-w-[140px] flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none"
+    class="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none"
   >
     <span class="text-sm text-gray-700">
-      {{ selected === "ALL" ? allLabel : selected.toLowerCase() | titlecase }}
+      {{ selected === "ALL" ? allLabel : (selected.toLowerCase() | titlecase) }}
     </span>
 
     <svg
@@ -28,13 +28,13 @@
   <!-- Dropdown -->
   @if (open) {
   <div
-    class="absolute z-20 mt-2 w-[140px] bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+    class="absolute z-20 mt-2 w-full bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
   >
     <!-- ALL -->
     <button
       type="button"
       (click)="select('ALL')"
-      class="min-w-[140px] text-left px-4 py-2 text-sm hover:bg-gray-100"
+      class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
       [class.bg-gray-100]="activeIndex === 0"
     >
       <!-- [class.bg-gray-100]="selected === 'ALL'" -->
@@ -45,11 +45,10 @@
     <button
       type="button"
       (click)="select(option)"
-      class="min-w-[140px] text-left px-4 py-2 text-sm hover:bg-gray-100"
+      class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
       [class.bg-gray-100]="activeIndex === i + 1"
     >
-      <!-- [class.bg-gray-100]="selected === option" -->
-      {{ option.toLowerCase() | titlecase }}
+      {{ formatOption(option) | titlecase }}
     </button>
     }
   </div>

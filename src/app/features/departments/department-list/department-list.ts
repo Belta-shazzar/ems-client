@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DepartmentService } from '../../../core/services/department.service';
 import { Department } from '../../../core/models/department.model';
@@ -11,6 +11,7 @@ import {
   Trash2,
 } from 'lucide-angular';
 import { FormsModule } from '@angular/forms';
+import { StoreService } from '../../../core/services/store.service';
 
 @Component({
   selector: 'app-department-list',
@@ -19,6 +20,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './department-list.html',
 })
 export class DepartmentList implements OnInit {
+  private router = inject(Router);
+  private storeService = inject(StoreService);
+  private departmentService = inject(DepartmentService);
+
   departments: Department[] = [];
   filteredDepartments: Department[] = [];
   loading = false; // true;
@@ -30,11 +35,6 @@ export class DepartmentList implements OnInit {
   readonly Edit = Edit;
   readonly Trash2 = Trash2;
 
-  constructor(
-    private departmentService: DepartmentService,
-    private router: Router
-  ) {}
-
   ngOnInit(): void {
     this.loadDepartments();
   }
@@ -45,8 +45,8 @@ export class DepartmentList implements OnInit {
       next: (departments) => {
         this.departments = departments;
         this.filteredDepartments = [...departments];
+        this.storeService.setDepartments(departments);
         this.loading = false;
-        console.log('The department list: ', this.filteredDepartments)
       },
       error: () => {
         this.loading = false;

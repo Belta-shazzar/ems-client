@@ -150,7 +150,13 @@
                 </svg>
                 <span>Created {{ formatDate(dept.createdAt) }}</span>
               </div>
-              <div>
+              <div class="">
+                <a
+                  [routerLink]="['/department', dept.id, 'employees']"
+                  class="text-primary-800 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium hover:underline"
+                >
+                  View Employees
+                </a>
                 <!-- Status Badge -->
                 <span
                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"

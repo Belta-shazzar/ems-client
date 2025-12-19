@@ -1,4 +1,11 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -24,10 +31,19 @@ export class Dropdown<T extends string> {
   }
 
   select(value: T | 'ALL') {
-    this.selected = value;
+    this.selected = this.formatOption(value) as any;
     this.open = false;
     this.activeIndex = -1;
     this.selectedChange.emit(value);
+  }
+
+  formatOption(option: string | { name: string }): string {
+    // console.log('Holaaa: ', option)
+    if (typeof option === 'object') {
+      return option?.name.toLowerCase();
+    }
+
+    return option.toLowerCase();
   }
 
   /* -------------------- Click Outside -------------------- */
@@ -55,8 +71,7 @@ export class Dropdown<T extends string> {
 
       case 'ArrowUp':
         event.preventDefault();
-        this.activeIndex =
-          (this.activeIndex - 1 + totalItems) % totalItems;
+        this.activeIndex = (this.activeIndex - 1 + totalItems) % totalItems;
         break;
 
       case 'Enter':

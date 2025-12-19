@@ -34,6 +34,14 @@ export const routes: Routes = [
         data: { roles: [EmployeeRole.ADMIN, EmployeeRole.MANAGER] },
       },
       {
+        path: 'department/:id/employees',
+        loadComponent: () =>
+          import('./features/employees/employee-list/employee-list').then(
+            (m) => m.EmployeeList
+          ),
+        data: { roles: [EmployeeRole.ADMIN] },
+      },
+      {
         path: 'employees/new',
         loadComponent: () =>
           import('./features/employees/employee-form/employee-form').then(

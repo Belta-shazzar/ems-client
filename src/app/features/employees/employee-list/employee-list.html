@@ -37,20 +37,30 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-3">
-        <app-dropdown
-          [options]="employeeRoles"
-          [selected]="selectedRole"
-          allLabel="All Roles"
-          (selectedChange)="onRoleChange($event)"
-        ></app-dropdown>
+      <div class="flex items-end gap-3">
+        <div class="grid grid-cols-2 gap-4">
+          <app-dropdown
+            [options]="employeeRoles"
+            [selected]="selectedRole"
+            allLabel="All Roles"
+            (selectedChange)="onRoleChange($event)"
+          ></app-dropdown>
 
-        <app-dropdown
-          [options]="employeeStatuses"
-          [selected]="selectedStatus"
-          allLabel="All Statuses"
-          (selectedChange)="onStatusChange($event)"
-        ></app-dropdown>
+          <app-dropdown
+            [options]="employeeStatuses"
+            [selected]="selectedStatus"
+            allLabel="All Statuses"
+            (selectedChange)="onStatusChange($event)"
+          ></app-dropdown>
+
+          <app-dropdown
+            class="col-span-2 w-full"
+            [options]="departments"
+            [selected]="selectedDepartment"
+            allLabel="All Departments"
+            (selectedChange)="onDepartmentChange($event)"
+          ></app-dropdown>
+        </div>
 
         @if(isAdmin) {
         <a
