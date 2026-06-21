@@ -1,13 +1,14 @@
 {
-  "name": "client",
+  "name": "employee-management-system-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start:ngrok": "ng serve --host=0.0.0.0 --port=4200",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "infra:setup": "bash scripts/setup-infra.sh",
+    "deploy": "bash scripts/deploy.sh"
   },
   "prettier": {
     "overrides": [

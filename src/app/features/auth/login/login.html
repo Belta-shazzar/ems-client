@@ -20,11 +20,11 @@
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <!-- Error Message -->
         @if (error) {
-        <div
-          class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
-        >
-          {{ error }}
-        </div>
+          <div
+            class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm"
+          >
+            {{ error }}
+          </div>
         }
 
         <!-- Email Field -->
@@ -55,12 +55,14 @@
             />
           </div>
           <p class="mt-1 text-sm text-red-600">
-            @if(email?.invalid && email?.touched) {
-            @if(email?.errors?.['required']) {
-            <span>Email is required</span>
-            } @if(email?.errors?.['email']) {
-            <span>Please enter a valid email</span>
-            } }
+            @if (email?.invalid && email?.touched) {
+              @if (email?.errors?.["required"]) {
+                <span>Email is required</span>
+              }
+              @if (email?.errors?.["email"]) {
+                <span>Please enter a valid email</span>
+              }
+            }
           </p>
         </div>
 
@@ -72,7 +74,9 @@
           >
             Password
           </label>
+
           <div class="relative">
+            <!-- Lock icon -->
             <div
               class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
             >
@@ -82,20 +86,41 @@
                 [size]="20"
               ></lucide-icon>
             </div>
+
+            <!-- Input -->
             <input
               id="password"
-              type="password"
+              [type]="showPassword ? 'text' : 'password'"
               formControlName="password"
-              class="input pl-10 placeholder-gray-300"
+              class="input pl-10 pr-10 placeholder-gray-300"
               [class.border-red-500]="password?.invalid && password?.touched"
               placeholder="••••••••"
             />
+
+            <!-- Eye toggle -->
+            <button
+              type="button"
+              (click)="showPassword = !showPassword"
+              class="absolute inset-y-0 right-0 pr-3 flex items-center"
+            >
+              <lucide-icon
+                [img]="showPassword ? EyeOff : Eye"
+                class="text-gray-400 hover:text-gray-600"
+                [size]="20"
+              ></lucide-icon>
+            </button>
           </div>
+
+          <!-- Errors -->
           <p class="mt-1 text-sm text-red-600">
-            @if (password?.invalid && password?.touched) { @if
-            (password?.errors?.['required']) { Password is required } @if
-            (password?.errors?.['minlength']) { Password must be at least 8
-            characters } }
+            @if (password?.invalid && password?.touched) {
+              @if (password?.errors?.["required"]) {
+                Password is required
+              }
+              @if (password?.errors?.["minlength"]) {
+                Password must be at least 8 characters
+              }
+            }
           </p>
         </div>
 
@@ -106,11 +131,12 @@
           class="w-full btn btn-primary py-3 text-base font-semibold flex items-center justify-center gap-2"
         >
           @if (!loading) {
-          <lucide-icon [img]="LogIn" [size]="20"></lucide-icon>
-          } @if (loading) {
-          <span
-            class="inline-block h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"
-          ></span>
+            <lucide-icon [img]="LogIn" [size]="20"></lucide-icon>
+          }
+          @if (loading) {
+            <span
+              class="inline-block h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"
+            ></span>
           }
 
           <span>{{ loading ? "Signing in..." : "Sign In" }}</span>
@@ -130,7 +156,8 @@
 
     <!-- Footer -->
     <p class="text-center text-xs text-gray-500">
-      © 2025 Employee Management System. All rights reserved. A product of Shazzar
+      © 2025 Employee Management System. All rights reserved. A product of
+      Shazzar
     </p>
   </div>
 </div>

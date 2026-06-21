@@ -7,7 +7,14 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-import { LucideAngularModule, Mail, Lock, LogIn } from 'lucide-angular';
+import {
+  LucideAngularModule,
+  Mail,
+  Lock,
+  LogIn,
+  Eye,
+  EyeOff,
+} from 'lucide-angular';
 
 @Component({
   selector: 'app-login',
@@ -22,9 +29,12 @@ export class Login {
   readonly Mail = Mail;
   readonly Lock = Lock;
   readonly LogIn = LogIn;
+  Eye = Eye;
+  EyeOff = EyeOff;
+  showPassword = false;
 
   loginForm: FormGroup;
-  loading = false;//true;
+  loading = false; //true;
   error = '';
 
   constructor() {
